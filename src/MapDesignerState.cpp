@@ -47,40 +47,41 @@ void MapDesignerState::Init(AppEngine* app_)
 	ribbon.setLength(app->window->getSize().x);
 
 	fileTab.setText("File");
-	fileTab.addEntry(new RibbonEntry("Save", RibbonCallbacks::FileSave));
-	//fileTab.addEntry(new RibbonEntry("Save As", RibbonCallbacks::FileSaveAs));
-	//fileTab.addEntry(new RibbonEntry("Export As", RibbonCallbacks::FileExportAs));
-	fileTab.addEntry(new RibbonEntry("Load", RibbonCallbacks::FileLoad));
-	fileTab.addEntry(new RibbonEntry("View Image", RibbonCallbacks::FileViewImage));
+	fileTab.addEntry(new RibbonTextEntry("Save", RibbonCallbacks::FileSave));
+	//fileTab.addEntry(new RibbonTextEntry("Save As", RibbonCallbacks::FileSaveAs));
+	//fileTab.addEntry(new RibbonTextEntry("Export As", RibbonCallbacks::FileExportAs));
+	fileTab.addEntry(new RibbonTextEntry("Load", RibbonCallbacks::FileLoad));
+	//fileTab.addEntry(new RibbonSpacerEntry);
+	fileTab.addEntry(new RibbonTextEntry("View Image", RibbonCallbacks::FileViewImage));
 	ribbon.addTab(fileTab);
 
 /*
 	editTab.setText("Edit");
-	editTab.addEntry(new RibbonEntry("Resize Map", RibbonCallbacks::EditResizeMap));
+	editTab.addEntry(new RibbonTextEntry("Resize Map", RibbonCallbacks::EditResizeMap));
 	ribbon.addTab(editTab);
 */
 
 	viewTab.setText("View");
-	viewTab.addEntry(new RibbonEntry("Center View", RibbonCallbacks::ViewCenter));
+	viewTab.addEntry(new RibbonTextEntry("Center View", RibbonCallbacks::ViewCenter));
 	ribbon.addTab(viewTab);
 
 /*
 	settingsTab.setText("Settings");
-	settingsTab.addEntry(new RibbonEntry("Toggle Experimental Features", RibbonCallbacks::SettingsEnableExperimentalFeatures));
-	settingsTab.addEntry(new RibbonEntry("Auto Save when Closed", RibbonCallbacks::SettingsAutoSaveOnClose));
+	settingsTab.addEntry(new RibbonTextEntry("Toggle Experimental Features", RibbonCallbacks::SettingsEnableExperimentalFeatures));
+	settingsTab.addEntry(new RibbonTextEntry("Auto Save when Closed", RibbonCallbacks::SettingsAutoSaveOnClose));
 	ribbon.addTab(settingsTab);
 */
 
 	helpTab.setText("Help");
-	helpTab.addEntry(new RibbonEntry("User Manual", RibbonCallbacks::HelpManual));
-	helpTab.addEntry(new RibbonEntry("Huntress", RibbonCallbacks::HelpHuntress));
-	helpTab.addEntry(new RibbonEntry("About", RibbonCallbacks::HelpAbout));
+	helpTab.addEntry(new RibbonTextEntry("User Manual", RibbonCallbacks::HelpManual));
+	helpTab.addEntry(new RibbonTextEntry("Huntress", RibbonCallbacks::HelpHuntress));
+	helpTab.addEntry(new RibbonTextEntry("About", RibbonCallbacks::HelpAbout));
 	ribbon.addTab(helpTab);
 
-	menuBackground.setSize(sf::Vector2f(85, app->window->getSize().y - SFUI::Theme::getBoxHeight()));
+	menuBackground.setSize(sf::Vector2f(85, app->window->getSize().y));
 	menuBackground.setFillColor(sf::Color(70, 70, 70));
 
-	layerSelectBackground.setSize(sf::Vector2f(85, app->window->getSize().y - SFUI::Theme::getBoxHeight()));
+	layerSelectBackground.setSize(sf::Vector2f(85, app->window->getSize().y));
 	layerSelectBackground.setPosition(sf::Vector2f(app->window->getSize().x - 85, 0));
 	layerSelectBackground.setFillColor(sf::Color(70, 70, 70));
 
@@ -284,8 +285,7 @@ void MapDesignerState::Draw()
 {
 	app->window->clear(sf::Color(30, 30, 30));
 
-
-/*	app->window->draw(map);
+	app->window->draw(map);
 
 	app->window->draw(menuBackground);
 
@@ -302,18 +302,38 @@ void MapDesignerState::Draw()
 
 	app->window->draw(layerSelectBackground);
 
+	for (int i = 0; i < map.layers.size(); i++)
+	{
+		sf::RectangleShape shape;
+		shape.setSize(sf::Vector2f(75, 75));
+		shape.setPosition(sf::Vector2f(app->window->getSize().x - layerSelectBackground.getSize().x + 10, (75 * i) + SFUI::Theme::getBoxHeight()));
+		shape.setFillColor(sf::Color(80, 80, 80));
+
+		if (i == map.currentLayer)
+		{
+			shape.setOutlineColor(sf::Color(50, 50, 50));
+			shape.setOutlineThickness(-2);
+		}
+		else
+		{
+			shape.setOutlineColor(sf::Color(70, 70, 70));
+			shape.setOutlineThickness(-1);
+		}
+
+		app->window->draw(shape);
+		
+		sf::Text layerNumber;
+		layerNumber.setCharacterSize(32);
+		layerNumber.setFont(SFUI::Theme::getFont());
+		layerNumber.setString(std::to_string(i));
+		layerNumber.setPosition(shape.getPosition() + sf::Vector2f(28, 16));
+
+		app->window->draw(layerNumber);
+	}
+
 	app->window->draw(ribbon);
 
 	app->window->draw(hideTileSelectionButton);
-	*/
-
-//	sf::View layerThing(sf::FloatRect(app->window->getSize().x - (layerSelectBackground.getSize().x / 2), (75 / 2), 75, 75));
-	sf::View layerThing(sf::FloatRect(100, 100, 75, 75));
-
-	app->window->setView(layerThing);
-	app->window->draw(map);
-
-	app->window->setView(app->window->getDefaultView());
 
 	app->window->display();
 }

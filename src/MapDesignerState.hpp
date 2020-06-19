@@ -19,12 +19,36 @@ class RibbonTab;
 class RibbonEntry : public sf::Drawable
 {
 public:
-    RibbonEntry()
+    RibbonEntry() {}
+    ~RibbonEntry() {}
+
+    int callbackID = -1;
+    sf::RectangleShape shape;
+
+    virtual void setPosition(const sf::Vector2f& position) {}
+
+    virtual int onMouseMove(const sf::Vector2i& position) {}
+    virtual bool onMousePressed(const sf::Vector2i& position) {}
+
+    virtual float getLength() const {}
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {}
+};
+
+class RibbonSpacerEntry : public RibbonEntry
+{
+
+};
+
+class RibbonTextEntry : public RibbonEntry
+{
+public:
+    RibbonTextEntry()
     {
 
     }
 
-    RibbonEntry(const sf::String& title, const int callbackID = -1, const sf::String hotkey = "")
+    RibbonTextEntry(const sf::String& title, const int callbackID = -1, const sf::String hotkey = "")
     {
         std::cout << "constructing ribbonentry. callback: " << callbackID << std::endl;
 
@@ -42,7 +66,7 @@ public:
         this->callbackID = callbackID;
     }
 
-    RibbonEntry(const RibbonEntry&) = delete;
+    RibbonTextEntry(const RibbonEntry&) = delete;
 
     void setText(const sf::String& string)
     {
@@ -109,8 +133,6 @@ public:
         target.draw(text, states);
         target.draw(hotkey, states);
     }
-
-    int callbackID = -1;
 
     sf::RectangleShape shape;
 
