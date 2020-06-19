@@ -38,8 +38,8 @@ void AppEngine::Init(AppSettings settings_)
 	}
 
 	// TODO: do this in startup state
-	if (!fs::exists("./housebin"))
-		fs::create_directory("./housebin");
+	if (!fs::exists("./battlemapper_bin"))
+		fs::create_directory("./battlemapper_bin");
 
 	SFUI::Theme::loadFont("./battlemapper_bin/resources/interface/tahoma.ttf");
 	SFUI::Theme::loadTexture("./battlemapper_bin/resources/interface/texture_square.png", settings.debug);

@@ -368,9 +368,8 @@ public:
 private:
 	bool ready = false;
 
+    Tileset tileset;
     Map map;
-
-    sf::Texture tileset;
 
     struct Tile
     {
@@ -385,10 +384,12 @@ private:
 
     SFUI::Menu* menu;
     sf::RectangleShape menuBackground;
+    sf::RectangleShape layerSelectBackground;
 
     Ribbon ribbon;
 
     RibbonTab fileTab;
+    RibbonTab editTab;
     RibbonTab viewTab;
     RibbonTab settingsTab;
     RibbonTab helpTab;
